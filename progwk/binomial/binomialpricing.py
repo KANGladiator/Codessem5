@@ -22,11 +22,34 @@ def Vf_pricing(n,tree,k, optype):
     return Vf
 
 
+
+
+
+import numpy as np
+
+def binomial_option_price_recursive(price_tree, r, delta_t, K, option_type='call', i=0, j=0):
+    if i == len(price_tree) - 1:
+        if option_type == 'call':
+            return max(0, price_tree[i, j] - K)
+        elif option_type == 'put':
+            return max(0, K - price_tree[i, j])
+    else:
+        option_price_up = binomial_option_price_recursive(price_tree, r, delta_t, K, option_type, i + 1, j)
+        option_price_down = binomial_option_price_recursive(price_tree, r, delta_t, K, option_type, i + 1, j + 1)
+        if option_type == 'call':
+            return np.exp(-r * delta_t) * (p * option_price_up + (1 - p) * option_price_down)
+        elif option_type == 'put':
+            return np.exp(-r * delta_t) * (p * option_price_up + (1 - p) * option_price_down)
+
+
 S0=8
 u=2
 d=0.5
 n=4
 k=10
+p= 0.5
+q=0.5
+r=0.25
 optype= "call"
 tree = binomial_pricing(S0, u, d, n)
 
@@ -38,4 +61,10 @@ for i in range(n+1):
 Vf= Vf_pricing(n, tree, k, optype)
 
 print("Option pricing: ", Vf)
+
+option_price= binomial_option_price_recursive(tree, r, n, k)
+print(option_price)
+
+#Vf_option_pricing(n, tree, p, q)
+
 
