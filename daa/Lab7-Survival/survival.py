@@ -54,6 +54,3 @@ plt.plot(stepsize,probtime)
 plt.xlabel("Steps Taken")
 plt.ylabel("Time to calculate survival rate")
 plt.show()
-
-
-
